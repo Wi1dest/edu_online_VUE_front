@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export default {
-  login(member) {
+  memberLogin(member) {
     return request({
       url: '/ucenterservice/member/login',
       method: 'post',
