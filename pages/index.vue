@@ -47,7 +47,7 @@
                         <i class="c-fff fsize12 f-fA">免费</i>
                       </span>
                       <span class="fl jgAttr c-ccc f-fA">
-                        <i class="c-999 f-fA">9634人学习</i>
+                        <i class="c-999 f-fA">{{course.buyCount}}人学习</i>
                         |
                         <i class="c-999 f-fA">9634评论</i>
                       </span>
