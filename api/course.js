@@ -19,5 +19,5 @@ export default {
             url: "/eduservice/course/getFrontCourseInfo/" + courseId,
             method: 'get'
         })
-    },
+    }
 }

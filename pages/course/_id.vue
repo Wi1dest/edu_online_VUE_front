@@ -124,7 +124,7 @@
                                 :key="video.id"
                                 class="lh-menu-second ml30"
                               >
-                                <a href="#" title>
+                                <a :href="'/player/'+video.videoSourceId" target="_blank">
                                   <span v-if="video.free === true" class="fr">
                                     <i class="free-icon vam mr10">免费试听</i>
                                   </span>
@@ -140,7 +140,6 @@
                   </section>
                   <!-- /课程大纲 结束 -->
                 </div>
-                <!-- /课程大纲 -->
               </article>
             </div>
           </section>
