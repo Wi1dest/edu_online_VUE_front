@@ -55,18 +55,20 @@
           </section>
           <section class="fl">
             <ol class="js-tap clearfix">
-              <li>
-                <a title="关注度" href="#" @click="searchBuyCount()" :class="{active:buyCountSort=='1'}">销量
+              <li :class="{'current bg-orange':buyCountSort!=''}">
+                <a title="销量" href="javascript:void(0);" @click="searchBuyCount()">
+                  销量
                   <span :class="{hide:buyCountSort==''}">↓</span>
                 </a>
               </li>
-              <li>
-                <a title="最新" href="#" @click="searchGmtCreate()" :class="{active:gmtCreateSort=='1'}">最新
+              <li :class="{'current bg-orange':gmtCreateSort!=''}">
+                <a title="最新" href="javascript:void(0);" @click="searchGmtCreate()">
+                  最新
                   <span :class="{hide:gmtCreateSort==''}">↓</span>
                 </a>
               </li>
-              <li>
-                <a title="价格" href="#" @click="searchPrice()" :class="{active:priceSort=='1'}">
+              <li :class="{'current bg-orange':priceSort!=''}">
+                <a title="价格" href="javascript:void(0);" @click="searchPrice()">
                   价格&nbsp;
                   <span :class="{hide:priceSort==''}">↓</span>
                 </a>
