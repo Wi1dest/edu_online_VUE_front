@@ -84,18 +84,19 @@ export default {
       login
         .memberLogin(this.user)
         .then((response) => {
-          console.info(response);
           if (response.data.success) {
             //把token存在cookie中、也可以放在localStorage中
             cookie.set("token", response.data.data, { domain: "localhost" });
             //登录成功根据token获取用户信息
             login.getMemberInfo().then((response) => {
               this.loginInfo = response.data.data;
+              console.info(this.loginInfo)
+              debugger
               //将用户信息记录cookie
               cookie.set("memberInfo", this.loginInfo, { domain: "localhost" });
-            });
-            //跳转页面
+                          //跳转页面
             window.location.href = "/";
+            });
           } else {
             this.$message({
               type: "error",
