@@ -91,7 +91,6 @@ export default {
             login.getMemberInfo().then((response) => {
               this.loginInfo = response.data.data;
               console.info(this.loginInfo)
-              debugger
               //将用户信息记录cookie
               cookie.set("memberInfo", this.loginInfo, { domain: "localhost" });
                           //跳转页面
