@@ -39,12 +39,12 @@
               </span>
             </section>
             <section class="c-attr-mt">
-              <a href="#" title="立即观看" class="comm-btn c-btn-3">立即观看</a>
+              <a @click="createOrder()" href="#" title="立即观看" class="comm-btn c-btn-3" >立即观看</a>
             </section>
           </section>
         </aside>
         <aside class="thr-attr-box">
-          <ol class="thr-attr-ol clearfix">
+          <ol class="thr-attr-ol ">
             <li>
               <p>&nbsp;</p>
               <aside>
@@ -289,6 +289,7 @@
 <script>
 import course from "@/api/course";
 import commentApi from "@/api/comment";
+import order from "@/api/order"
 
 import cookie from "js-cookie";
 
@@ -373,6 +374,16 @@ export default {
           });
         }
       });
+    },
+    //根据课程id，调用接口方法生成订单
+    createOrder(){
+        order.createOrder(this.courseId).then(response => {
+          console.info(response)
+            if(response.data.success){
+                //订单创建成功，跳转到订单页面
+                this.$router.push({ path: '/order/'+ response.data.data })
+            }
+        })
     },
   },
 };
