@@ -17,7 +17,7 @@
       <div>
         <article class="c-v-pic-wrap" style="height: 357px;">
           <section id="videoPlay" class="p-h-video-box">
-            <img :src="course.cover" :alt="course.title" class="dis c-v-pic" />
+            <img height="357px" :src="course.cover" :alt="course.title" class="dis c-v-pic" />
           </section>
         </article>
         <aside class="c-attr-wrap">
@@ -38,8 +38,11 @@
                 <a class="c-fff vam" title="收藏" href="#">收藏</a>
               </span>
             </section>
-            <section class="c-attr-mt">
-              <a @click="createOrder()" href="#" title="立即观看" class="comm-btn c-btn-3" >立即观看</a>
+            <section v-if="Number(course.price) === 0 || isBuy" class="c-attr-mt">
+              <a  href="#" title="立即观看" class="comm-btn c-btn-3" >立即观看</a>
+            </section>
+            <section v-else class="c-attr-mt">
+              <a @click="createOrder()" href="#" title="立即购买" class="comm-btn c-btn-3" >立即购买</a>
             </section>
           </section>
         </aside>
@@ -125,7 +128,7 @@
                                 class="lh-menu-second ml30"
                               >
                                 <a :href="'/player/'+video.videoSourceId" target="_blank">
-                                  <span v-if="video.free === true" class="fr">
+                                  <span v-if="video.isFree === true" class="fr">
                                     <i class="free-icon vam mr10">免费试听</i>
                                   </span>
                                   <em class="lh-menu-i-2 icon16 mr5">&nbsp;</em>
@@ -294,16 +297,20 @@ import order from "@/api/order"
 import cookie from "js-cookie";
 
 export default {
-  asyncData({ params, error }) {
-    return course.getFrontCourseInfo(params.id).then((response) => {
-      return {
-        course: response.data.data.course,
-        chapterList: response.data.data.chapterVoList,
-      };
-    });
-  },
+  // asyncData({ params, error }) {
+  //   return course.getFrontCourseInfo(params.id).then((response) => {
+  //     return {
+  //       course: response.data.data.course,
+  //       chapterList: response.data.data.chapterVoList,
+  //       isBuy: response.data.data.isBuy
+  //     };
+  //   });
+  // },
   data() {
     return {
+      course: "",
+      chapterList: "",
+      isBuy: "",
       data: {},
       page: 1,
       limit: 4,
@@ -330,10 +337,19 @@ export default {
     if (this.$route.params && this.$route.params.id) {
       this.courseId = this.$route.params.id;
     }
+    this.initCourseInfo()
     this.getCommentList();
     this.showInfo();
   },
   methods: {
+    initCourseInfo(){
+      course.getFrontCourseInfo(this.courseId).then((response) => {
+        this.course = response.data.data.course,
+        this.chapterList = response.data.data.chapterVoList,
+        this.isBuy = response.data.data.isBuy
+    });
+    }
+    ,
     showInfo() {
       //在cookie中获取会员信息
       var jsonStr = cookie.get("memberInfo");

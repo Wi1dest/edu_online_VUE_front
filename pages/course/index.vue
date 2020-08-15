@@ -16,7 +16,7 @@
             <dd class="c-s-dl-li">
               <ul class="clearfix">
                 <li>
-                  <a title="全部" href="#">全部</a>
+                  <a title="全部" href="course">全部</a>
                 </li>
                 <li
                   v-for="(item,index) in subjectNestedList"
@@ -277,7 +277,7 @@ export default {
 
 <style scoped>
 .active {
-  background: #fae18d;
+  background: #68CB9B;
 }
 .hide {
   display: none;
