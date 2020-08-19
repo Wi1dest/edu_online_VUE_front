@@ -8,4 +8,10 @@ export default {
             method: 'get'
         })
     },
+    checkUserCanWatchVdieo(videoId){
+        return request({
+            url: "/eduservice/course/checkUserCanWatchVdieo/" + videoId,
+            method: 'get'
+        })
+    }
 }

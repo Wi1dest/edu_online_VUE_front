@@ -39,15 +39,15 @@
               </span>
             </section>
             <section v-if="Number(course.price) === 0 || isBuy" class="c-attr-mt">
-              <a  href="#" title="立即观看" class="comm-btn c-btn-3" >立即观看</a>
+              <a href="#" title="立即观看" class="comm-btn c-btn-3">立即观看</a>
             </section>
             <section v-else class="c-attr-mt">
-              <a @click="createOrder()" href="#" title="立即购买" class="comm-btn c-btn-3" >立即购买</a>
+              <a @click="createOrder()" href="#" title="立即购买" class="comm-btn c-btn-3">立即购买</a>
             </section>
           </section>
         </aside>
         <aside class="thr-attr-box">
-          <ol class="thr-attr-ol ">
+          <ol class="thr-attr-ol">
             <li>
               <p>&nbsp;</p>
               <aside>
@@ -127,7 +127,9 @@
                                 :key="video.id"
                                 class="lh-menu-second ml30"
                               >
-                                <a :href="'/player/'+video.videoSourceId" target="_blank">
+                                <a 
+                                  @click="openVideo(video.id,video.videoSourceId)"
+                                >
                                   <span v-if="video.isFree === true" class="fr">
                                     <i class="free-icon vam mr10">免费试听</i>
                                   </span>
@@ -292,7 +294,8 @@
 <script>
 import course from "@/api/course";
 import commentApi from "@/api/comment";
-import order from "@/api/order"
+import order from "@/api/order";
+import videoApi from "@/api/video";
 
 import cookie from "js-cookie";
 
@@ -330,6 +333,8 @@ export default {
         nickname: "",
         sex: "",
       },
+      chooseVideoId:"",
+      chooseVideoSourceId:""
     };
   },
   created() {
@@ -337,19 +342,32 @@ export default {
     if (this.$route.params && this.$route.params.id) {
       this.courseId = this.$route.params.id;
     }
-    this.initCourseInfo()
+    this.initCourseInfo();
     this.getCommentList();
     this.showInfo();
   },
   methods: {
-    initCourseInfo(){
+    openVideo(videoId, videoSourceId) {
+      this.chooseVideoId = videoId;
+      this.chooseVideoSourceId = videoSourceId
+      videoApi.checkUserCanWatchVdieo(this.chooseVideoId).then((response) => {
+        if (response.data.success == true) {
+          this.$router.push({ path: "/player/" + videoSourceId });
+        } else {
+          this.$message({
+            type: "warning",
+            message: response.data.data,
+          });
+        }
+      });
+    },
+    initCourseInfo() {
       course.getFrontCourseInfo(this.courseId).then((response) => {
-        this.course = response.data.data.course,
-        this.chapterList = response.data.data.chapterVoList,
-        this.isBuy = response.data.data.isBuy
-    });
-    }
-    ,
+        (this.course = response.data.data.course),
+          (this.chapterList = response.data.data.chapterVoList),
+          (this.isBuy = response.data.data.isBuy);
+      });
+    },
     showInfo() {
       //在cookie中获取会员信息
       var jsonStr = cookie.get("memberInfo");
@@ -392,14 +410,13 @@ export default {
       });
     },
     //根据课程id，调用接口方法生成订单
-    createOrder(){
-        order.createOrder(this.courseId).then(response => {
-          console.info(response)
-            if(response.data.success){
-                //订单创建成功，跳转到订单页面
-                this.$router.push({ path: '/order/'+ response.data.data })
-            }
-        })
+    createOrder() {
+      order.createOrder(this.courseId).then((response) => {
+        if (response.data.success) {
+          //订单创建成功，跳转到订单页面
+          this.$router.push({ path: "/order/" + response.data.data });
+        }
+      });
     },
   },
 };
